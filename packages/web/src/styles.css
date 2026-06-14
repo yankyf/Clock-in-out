@@ -1,0 +1,101 @@
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --line: #334155;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --danger: #f87171;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.center {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.muted { color: var(--muted); }
+.spacer { flex: 1; }
+.error {
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.login { width: 320px; display: flex; flex-direction: column; gap: 0.75rem; }
+.login h1 { margin: 0; }
+
+label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
+
+input, select, button {
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #0b1220;
+  color: var(--text);
+}
+
+button {
+  cursor: pointer;
+  background: var(--accent);
+  color: #04293a;
+  border: none;
+  font-weight: 600;
+}
+button:disabled { opacity: 0.5; cursor: default; }
+button.link {
+  background: none;
+  color: var(--accent);
+  font-weight: 500;
+  padding: 0.3rem 0.4rem;
+}
+button.link.danger { color: var(--danger); }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.content { padding: 1.25rem; max-width: 1100px; margin: 0 auto; }
+
+.row { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
+.row.between { justify-content: space-between; }
+.totals { color: var(--muted); }
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.grid th, .grid td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+.grid th { color: var(--muted); font-weight: 600; }
+.grid tr.editing { background: rgba(56, 189, 248, 0.08); }
+.grid .actions { display: flex; gap: 0.25rem; white-space: nowrap; }
+.grid input, .grid select { padding: 0.3rem 0.4rem; width: 100%; }

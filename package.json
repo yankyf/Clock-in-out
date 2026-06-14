@@ -1,0 +1,23 @@
+{
+  "name": "clock-in-out",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Offline-first clock in/out platform (web admin + native desktop) — replacement for the Google Sheet + Apps Script workflow.",
+  "workspaces": [
+    "packages/shared",
+    "packages/server",
+    "packages/web",
+    "packages/desktop"
+  ],
+  "scripts": {
+    "build:shared": "npm run build -w @clock/shared",
+    "dev:server": "npm run dev -w @clock/server",
+    "dev:web": "npm run dev -w @clock/web",
+    "dev:desktop": "npm run dev -w @clock/desktop",
+    "typecheck": "npm run -ws --if-present typecheck",
+    "test": "npm run -ws --if-present test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

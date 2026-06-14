@@ -1,0 +1,50 @@
+// Prisma schema.
+// Dev uses SQLite for zero-setup. For cloud, switch `provider` to "postgresql"
+// and set DATABASE_URL to your Postgres connection string — no model changes
+// required.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  name         String
+  role         String      @default("WORKER") // OWNER | ADMIN | WORKER
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  entries      TimeEntry[]
+  rates        Rate[]
+}
+
+model TimeEntry {
+  id              String   @id // client-generated uuid (offline-first)
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  category        String   @default("WORK") // WORK | BABYSITTER
+  clockIn         DateTime
+  clockOut        DateTime?
+  babysitterBonus Boolean  @default(false)
+  note            String?
+  updatedAt       DateTime // client-authoritative; drives last-write-wins
+  deleted         Boolean  @default(false) // tombstone
+
+  @@index([userId, updatedAt])
+}
+
+// Per-user, per-category hourly rate (sheet cells I8 / L8).
+model Rate {
+  id          String @id @default(uuid())
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+  category    String // WORK | BABYSITTER
+  ratePerHour Float
+
+  @@unique([userId, category])
+}
