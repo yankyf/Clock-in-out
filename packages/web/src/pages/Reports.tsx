@@ -22,7 +22,13 @@ function money(n: number): string {
   return n.toLocaleString(undefined, { style: "currency", currency: "USD" });
 }
 
-export function Reports() {
+export function Reports({
+  viewUserId,
+  canEditRates,
+}: {
+  viewUserId: string;
+  canEditRates: boolean;
+}) {
   const [entries, setEntries] = useState<TimeEntry[]>([]);
   const [rates, setRates] = useState<CategoryRate[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +42,7 @@ export function Reports() {
   async function refresh() {
     setLoading(true);
     try {
-      const [e, r] = await Promise.all([api.listEntries(), api.listRates()]);
+      const [e, r] = await Promise.all([api.listEntries(viewUserId), api.listRates(viewUserId)]);
       setEntries(e);
       setRates(r);
     } catch (err) {
@@ -48,7 +54,8 @@ export function Reports() {
 
   useEffect(() => {
     refresh();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewUserId]);
 
   const range = useMemo<ReportRange>(() => {
     if (mode === "month") return monthBounds(month);
@@ -73,7 +80,7 @@ export function Reports() {
       return [...others, { category, ratePerHour: value }];
     });
     try {
-      await api.saveRate(category, value);
+      await api.saveRate(category, value, viewUserId);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
@@ -101,8 +108,10 @@ export function Reports() {
               min={0}
               step="0.5"
               defaultValue={rateValue(category)}
+              disabled={!canEditRates}
+              title={canEditRates ? undefined : "Only admins can change rates"}
               style={{ maxWidth: 120 }}
-              onBlur={(e) => saveRate(category, Number(e.target.value))}
+              onBlur={(e) => canEditRates && saveRate(category, Number(e.target.value))}
             />
             <span className="muted">/ hour</span>
           </div>

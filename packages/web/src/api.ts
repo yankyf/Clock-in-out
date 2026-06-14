@@ -2,10 +2,23 @@ import type {
   Category,
   CategoryRate,
   LoginResponse,
+  Role,
   TimeEntry,
   TimeEntryInput,
   User,
 } from "@clock/shared";
+
+export interface CreateUserInput {
+  email: string;
+  name: string;
+  role: Role;
+  password: string;
+}
+export interface UpdateUserInput {
+  name?: string;
+  role?: Role;
+  password?: string;
+}
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
 const TOKEN_KEY = "clock.token";
@@ -45,18 +58,25 @@ export const api = {
     return resp;
   },
   me: () => request<User>("/auth/me"),
-  listEntries: () => request<TimeEntry[]>("/entries"),
-  saveEntry: (e: TimeEntryInput) =>
+  listEntries: (userId?: string) =>
+    request<TimeEntry[]>(`/entries${userId ? `?userId=${encodeURIComponent(userId)}` : ""}`),
+  saveEntry: (e: TimeEntryInput & { userId?: string }) =>
     request<TimeEntry>(`/entries/${e.id}`, {
       method: "PUT",
       body: JSON.stringify(e),
     }),
   deleteEntry: (id: string) =>
     request<TimeEntry>(`/entries/${id}`, { method: "DELETE" }),
-  listRates: () => request<CategoryRate[]>("/rates"),
-  saveRate: (category: Category, ratePerHour: number) =>
-    request<CategoryRate>(`/rates/${category}`, {
+  listRates: (userId?: string) =>
+    request<CategoryRate[]>(`/rates${userId ? `?userId=${encodeURIComponent(userId)}` : ""}`),
+  saveRate: (category: Category, ratePerHour: number, userId?: string) =>
+    request<CategoryRate>(`/rates/${category}${userId ? `?userId=${encodeURIComponent(userId)}` : ""}`, {
       method: "PUT",
       body: JSON.stringify({ ratePerHour }),
     }),
+  listUsers: () => request<User[]>("/users"),
+  createUser: (input: CreateUserInput) =>
+    request<User>("/users", { method: "POST", body: JSON.stringify(input) }),
+  updateUser: (id: string, input: UpdateUserInput) =>
+    request<User>(`/users/${id}`, { method: "PATCH", body: JSON.stringify(input) }),
 };

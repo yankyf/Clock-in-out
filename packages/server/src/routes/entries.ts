@@ -16,6 +16,8 @@ const upsertSchema = z.object({
   clockOut: z.string().datetime().nullable(),
   babysitterBonus: z.boolean(),
   note: z.string().nullable(),
+  // Optional: only honored for admins/owners creating an entry for a worker.
+  userId: z.string().optional(),
 });
 
 /** List entries. Workers see their own; admins/owners may pass ?userId=. */
@@ -47,11 +49,14 @@ entriesRouter.put("/:id", async (req, res) => {
     return res.status(403).json({ error: "Not your entry" });
   }
 
+  // Admins/owners may file an entry on behalf of a worker via `userId`.
+  const ownerId = isPrivileged(req.auth!.role) && d.userId ? d.userId : userId;
+
   const row = await prisma.timeEntry.upsert({
     where: { id: d.id },
     create: {
       id: d.id,
-      userId: existing?.userId ?? userId,
+      userId: existing?.userId ?? ownerId,
       category: d.category,
       clockIn: new Date(d.clockIn),
       clockOut: d.clockOut ? new Date(d.clockOut) : null,

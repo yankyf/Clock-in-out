@@ -35,3 +35,15 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 }
+
+export function isPrivileged(role: Role): boolean {
+  return role === "ADMIN" || role === "OWNER";
+}
+
+/** Middleware: requires the caller to be an ADMIN or OWNER. Use after requireAuth. */
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!req.auth || !isPrivileged(req.auth.role)) {
+    return res.status(403).json({ error: "Admin only" });
+  }
+  next();
+}

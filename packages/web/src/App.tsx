@@ -4,13 +4,20 @@ import { api, getToken, setToken } from "./api.js";
 import { Login } from "./pages/Login.js";
 import { Entries } from "./pages/Entries.js";
 import { Reports } from "./pages/Reports.js";
+import { Team } from "./pages/Team.js";
 
-type Tab = "entries" | "reports";
+type Tab = "entries" | "reports" | "team";
+
+const isAdminRole = (u: User) => u.role === "OWNER" || u.role === "ADMIN";
 
 export function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("entries");
+
+  // Admin-only "viewing as": which user's data the Entries/Reports tabs show.
+  const [users, setUsers] = useState<User[]>([]);
+  const [viewUserId, setViewUserId] = useState<string>("");
 
   useEffect(() => {
     if (!getToken()) {
@@ -19,36 +26,57 @@ export function App() {
     }
     api
       .me()
-      .then(setUser)
+      .then((u) => {
+        setUser(u);
+        setViewUserId(u.id);
+        if (isAdminRole(u)) api.listUsers().then(setUsers).catch(() => {});
+      })
       .catch(() => setToken(null))
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="center muted">Loading…</div>;
+  if (!user) return <Login onLoggedIn={onLoggedIn} />;
 
-  if (!user) {
-    return <Login onLoggedIn={setUser} />;
+  function onLoggedIn(u: User) {
+    setUser(u);
+    setViewUserId(u.id);
+    if (isAdminRole(u)) api.listUsers().then(setUsers).catch(() => {});
   }
+
+  const admin = isAdminRole(user);
 
   return (
     <div className="app">
       <header className="topbar">
         <strong>Clock In/Out</strong>
         <nav className="tabs">
-          <button
-            className={tab === "entries" ? "tab active" : "tab"}
-            onClick={() => setTab("entries")}
-          >
+          <button className={tab === "entries" ? "tab active" : "tab"} onClick={() => setTab("entries")}>
             Entries
           </button>
-          <button
-            className={tab === "reports" ? "tab active" : "tab"}
-            onClick={() => setTab("reports")}
-          >
+          <button className={tab === "reports" ? "tab active" : "tab"} onClick={() => setTab("reports")}>
             Reports &amp; pay
           </button>
+          {admin && (
+            <button className={tab === "team" ? "tab active" : "tab"} onClick={() => setTab("team")}>
+              Team
+            </button>
+          )}
         </nav>
         <div className="spacer" />
+        {admin && tab !== "team" && (
+          <label className="viewas">
+            Viewing as
+            <select value={viewUserId} onChange={(e) => setViewUserId(e.target.value)}>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                  {u.id === user.id ? " (me)" : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <span className="muted">
           {user.name} · {user.role}
         </span>
@@ -63,7 +91,16 @@ export function App() {
         </button>
       </header>
       <main className="content">
-        {tab === "entries" ? <Entries /> : <Reports />}
+        {tab === "entries" && (
+          <Entries viewUserId={viewUserId || user.id} canActForOther={admin && viewUserId !== user.id} />
+        )}
+        {tab === "reports" && <Reports viewUserId={viewUserId || user.id} canEditRates={admin} />}
+        {tab === "team" && (
+          <Team
+            currentUser={user}
+            onUsersChanged={() => api.listUsers().then(setUsers).catch(() => {})}
+          />
+        )}
       </main>
     </div>
   );

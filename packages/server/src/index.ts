@@ -8,6 +8,7 @@ import { authRouter } from "./routes/auth.js";
 import { entriesRouter } from "./routes/entries.js";
 import { ratesRouter } from "./routes/rates.js";
 import { syncRouter } from "./routes/sync.js";
+import { usersRouter } from "./routes/users.js";
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.use("/auth", authRouter);
 app.use("/entries", entriesRouter);
 app.use("/rates", ratesRouter);
 app.use("/sync", syncRouter);
+app.use("/users", usersRouter);
 
 // Optionally serve the built web admin from the same origin (so the whole
 // platform is reachable on one URL / behind one tunnel). Set WEB_DIST or build

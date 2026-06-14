@@ -1,5 +1,15 @@
-import type { CategoryRate, TimeEntry } from "@clock/shared";
-import type { Rate as DbRate, TimeEntry as DbTimeEntry } from "@prisma/client";
+import type { CategoryRate, Role, TimeEntry, User } from "@clock/shared";
+import type { Rate as DbRate, TimeEntry as DbTimeEntry, User as DbUser } from "@prisma/client";
+
+export function toUser(row: DbUser): User {
+  return {
+    id: row.id,
+    email: row.email,
+    name: row.name,
+    role: row.role as Role,
+    createdAt: row.createdAt.toISOString(),
+  };
+}
 
 /** Prisma row (Date objects) -> shared TimeEntry (ISO strings). */
 export function toTimeEntry(row: DbTimeEntry): TimeEntry {

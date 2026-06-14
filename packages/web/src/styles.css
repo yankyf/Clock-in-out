@@ -90,6 +90,15 @@ button.link.danger { color: var(--danger); }
 }
 .tab.active { color: var(--text); border-color: var(--line); background: #0b1220; }
 
+.viewas {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.viewas select { padding: 0.3rem 0.4rem; }
+
 .row { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
 .row.between { justify-content: space-between; }
 .totals { color: var(--muted); }

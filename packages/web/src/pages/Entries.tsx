@@ -51,7 +51,13 @@ function newDraft(): Draft {
   };
 }
 
-export function Entries() {
+export function Entries({
+  viewUserId,
+  canActForOther,
+}: {
+  viewUserId: string;
+  canActForOther: boolean;
+}) {
   const [entries, setEntries] = useState<TimeEntry[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
@@ -61,7 +67,7 @@ export function Entries() {
   async function refresh() {
     setLoading(true);
     try {
-      setEntries(await api.listEntries());
+      setEntries(await api.listEntries(viewUserId));
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -71,7 +77,11 @@ export function Entries() {
 
   useEffect(() => {
     refresh();
-  }, []);
+    // Reset any in-progress edit when switching whose data we view.
+    setEditingId(null);
+    setDraft(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewUserId]);
 
   const totalHours = useMemo(() => sumPayableHours(entries), [entries]);
 
@@ -102,6 +112,8 @@ export function Entries() {
         clockOut: localInputToIso(draft.clockOut),
         babysitterBonus: draft.babysitterBonus,
         note: draft.note || null,
+        // When an admin is creating an entry for a worker, file it under them.
+        userId: canActForOther ? viewUserId : undefined,
       });
       cancel();
       await refresh();
