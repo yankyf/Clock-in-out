@@ -1,0 +1,24 @@
+# Render.com Blueprint — deploys the platform to a public HTTPS URL.
+# Connect this repo at https://dashboard.render.com -> New -> Blueprint.
+# Render reads this file and provisions the service automatically.
+services:
+  - type: web
+    name: clock-in-out
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      # Render injects PORT; the server already reads it.
+      - key: JWT_SECRET
+        generateValue: true # random per environment
+      # Ephemeral SQLite (free tier, no database add-on). Data resets on each
+      # deploy/restart. For durable data, see DEPLOY.md (switch to Postgres).
+      - key: DATABASE_URL
+        value: file:./dev.db
+      - key: SEED_OWNER_EMAIL
+        value: owner@example.com
+      # Render will prompt you to enter this when you launch the Blueprint,
+      # so the password is NOT committed to the repo.
+      - key: SEED_OWNER_PASSWORD
+        sync: false

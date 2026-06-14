@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/.local-data
+packages/desktop
+*.sqlite
+*.sqlite3
+*.db
+**/*.db
+.git
+.github
+*.log
