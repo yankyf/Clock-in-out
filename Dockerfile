@@ -16,8 +16,10 @@ COPY packages/shared/package.json packages/shared/
 COPY packages/server/package.json packages/server/
 COPY packages/web/package.json packages/web/
 # --ignore-scripts skips the desktop's electron/better-sqlite3 native build.
-# --include=dev keeps build tools (tsc, vite, prisma) even though we run prod.
-RUN npm install --include-workspace-root --include=dev --omit=optional --ignore-scripts \
+# --include=dev keeps build tools (tsc, vite, prisma). We must NOT pass
+# --omit=optional: Rollup ships its Linux binary as an optional dependency,
+# and Vite's build fails without it.
+RUN npm install --include-workspace-root --include=dev --ignore-scripts \
   -w @clock/shared -w @clock/server -w @clock/web
 
 # --- build ------------------------------------------------------------------
