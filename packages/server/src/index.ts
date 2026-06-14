@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { PORT } from "./env.js";
 import { authRouter } from "./routes/auth.js";
 import { entriesRouter } from "./routes/entries.js";
+import { ratesRouter } from "./routes/rates.js";
 import { syncRouter } from "./routes/sync.js";
 
 const app = express();
@@ -16,6 +17,7 @@ app.get("/health", (_req, res) => res.json({ ok: true, time: new Date().toISOStr
 
 app.use("/auth", authRouter);
 app.use("/entries", entriesRouter);
+app.use("/rates", ratesRouter);
 app.use("/sync", syncRouter);
 
 // Optionally serve the built web admin from the same origin (so the whole

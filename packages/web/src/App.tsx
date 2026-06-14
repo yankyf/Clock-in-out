@@ -3,10 +3,14 @@ import type { User } from "@clock/shared";
 import { api, getToken, setToken } from "./api.js";
 import { Login } from "./pages/Login.js";
 import { Entries } from "./pages/Entries.js";
+import { Reports } from "./pages/Reports.js";
+
+type Tab = "entries" | "reports";
 
 export function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState<Tab>("entries");
 
   useEffect(() => {
     if (!getToken()) {
@@ -30,7 +34,20 @@ export function App() {
     <div className="app">
       <header className="topbar">
         <strong>Clock In/Out</strong>
-        <span className="muted">Admin platform</span>
+        <nav className="tabs">
+          <button
+            className={tab === "entries" ? "tab active" : "tab"}
+            onClick={() => setTab("entries")}
+          >
+            Entries
+          </button>
+          <button
+            className={tab === "reports" ? "tab active" : "tab"}
+            onClick={() => setTab("reports")}
+          >
+            Reports &amp; pay
+          </button>
+        </nav>
         <div className="spacer" />
         <span className="muted">
           {user.name} · {user.role}
@@ -46,7 +63,7 @@ export function App() {
         </button>
       </header>
       <main className="content">
-        <Entries />
+        {tab === "entries" ? <Entries /> : <Reports />}
       </main>
     </div>
   );

@@ -1,4 +1,6 @@
 import type {
+  Category,
+  CategoryRate,
   LoginResponse,
   TimeEntry,
   TimeEntryInput,
@@ -51,4 +53,10 @@ export const api = {
     }),
   deleteEntry: (id: string) =>
     request<TimeEntry>(`/entries/${id}`, { method: "DELETE" }),
+  listRates: () => request<CategoryRate[]>("/rates"),
+  saveRate: (category: Category, ratePerHour: number) =>
+    request<CategoryRate>(`/rates/${category}`, {
+      method: "PUT",
+      body: JSON.stringify({ ratePerHour }),
+    }),
 };
