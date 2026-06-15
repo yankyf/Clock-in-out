@@ -2,6 +2,7 @@
   "name": "@clock/desktop",
   "version": "0.1.0",
   "description": "Offline-first clock in/out desktop client.",
+  "author": "Clock In Out",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/copy-renderer.mjs",
@@ -20,12 +21,15 @@
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20.14.0",
     "electron": "^31.3.0",
-    "electron-builder": "^24.13.3",
+    "electron-builder": "26.15.3",
     "typescript": "^5.5.4"
   },
   "build": {
     "appId": "com.clockinout.app",
     "productName": "Clock In Out",
+    "executableName": "clock-in-out",
+    "electronVersion": "31.3.0",
+    "npmRebuild": false,
     "files": ["dist/**/*", "package.json"],
     "directories": { "output": "release" },
     "asarUnpack": ["**/*.node"],

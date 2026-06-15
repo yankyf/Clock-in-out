@@ -35,7 +35,7 @@ jobs:
 
       - name: Package installer
         working-directory: packages/desktop
-        run: npx electron-builder --publish never
+        run: npx --no-install electron-builder --publish never
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
