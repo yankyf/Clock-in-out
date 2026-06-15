@@ -99,6 +99,29 @@ button.link.danger { color: var(--danger); }
 }
 .viewas select { padding: 0.3rem 0.4rem; }
 
+.downloads { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+.card.download {
+  display: block;
+  width: 240px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.15s, transform 0.05s;
+}
+.card.download:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card.download.recommended { border-color: var(--accent); }
+.dl-os { font-size: 1.1rem; font-weight: 700; }
+.dl-badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.7rem;
+  color: #04293a;
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+.dl-hint { margin: 0.5rem 0 1rem; font-size: 0.8rem; }
+.dl-cta { color: var(--accent); font-weight: 600; }
+
 .row { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
 .row.between { justify-content: space-between; }
 .totals { color: var(--muted); }

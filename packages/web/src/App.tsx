@@ -5,8 +5,9 @@ import { Login } from "./pages/Login.js";
 import { Entries } from "./pages/Entries.js";
 import { Reports } from "./pages/Reports.js";
 import { Team } from "./pages/Team.js";
+import { Download } from "./pages/Download.js";
 
-type Tab = "entries" | "reports" | "team";
+type Tab = "entries" | "reports" | "team" | "download";
 
 const isAdminRole = (u: User) => u.role === "OWNER" || u.role === "ADMIN";
 
@@ -62,9 +63,12 @@ export function App() {
               Team
             </button>
           )}
+          <button className={tab === "download" ? "tab active" : "tab"} onClick={() => setTab("download")}>
+            Download app
+          </button>
         </nav>
         <div className="spacer" />
-        {admin && tab !== "team" && (
+        {admin && (tab === "entries" || tab === "reports") && (
           <label className="viewas">
             Viewing as
             <select value={viewUserId} onChange={(e) => setViewUserId(e.target.value)}>
@@ -101,6 +105,7 @@ export function App() {
             onUsersChanged={() => api.listUsers().then(setUsers).catch(() => {})}
           />
         )}
+        {tab === "download" && <Download />}
       </main>
     </div>
   );

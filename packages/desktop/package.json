@@ -8,17 +8,40 @@
     "start": "electron .",
     "dev": "npm run build && electron .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dist": "npm run build && electron-builder",
     "postinstall": "electron-rebuild -f -w better-sqlite3 || true"
   },
   "dependencies": {
-    "@clock/shared": "*",
     "better-sqlite3": "^11.1.2"
   },
   "devDependencies": {
+    "@clock/shared": "*",
     "@electron/rebuild": "^3.6.0",
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20.14.0",
     "electron": "^31.3.0",
+    "electron-builder": "^24.13.3",
     "typescript": "^5.5.4"
+  },
+  "build": {
+    "appId": "com.clockinout.app",
+    "productName": "Clock In Out",
+    "files": ["dist/**/*", "package.json"],
+    "directories": { "output": "release" },
+    "asarUnpack": ["**/*.node"],
+    "mac": {
+      "target": ["dmg"],
+      "artifactName": "Clock-In-Out-mac.${ext}",
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": ["nsis"],
+      "artifactName": "Clock-In-Out-win.${ext}"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "artifactName": "Clock-In-Out-linux.${ext}",
+      "category": "Office"
+    }
   }
 }
