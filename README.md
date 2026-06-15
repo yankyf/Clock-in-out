@@ -76,6 +76,18 @@ Default seed login (change via `SEED_OWNER_*` in `.env`):
 - **Desktop:** package with electron-builder; set `CLOCK_SERVER_URL` (or enter
   the server URL on the login screen).
 
+## Desktop app downloads
+
+Installers are built automatically for macOS, Windows and Linux by the
+`Build desktop installers` GitHub Actions workflow (`.github/workflows/
+desktop-release.yml`) and published to GitHub Releases. The web app's
+**Download app** tab links to the latest release assets
+(`Clock-In-Out-{mac.dmg,win.exe,linux.AppImage}`).
+
+To cut a release: run the workflow (Actions → Build desktop installers → Run
+workflow) or push a `v*` tag. After installing, launch the app and enter your
+server URL on the login screen.
+
 ## Status — thin slice (this commit)
 
 Done end-to-end: auth, clock in/out, offline local storage, push/pull sync,
