@@ -97,8 +97,9 @@ function registerIpc() {
   ipcMain.handle("get-state", () => buildState());
 
   ipcMain.handle("login", async (_e, args: { serverUrl: string; email: string; password: string }) => {
-    const resp = await SyncEngine.login(args.serverUrl, args.email, args.password);
-    saveSession({ serverUrl: args.serverUrl, token: resp.token, user: resp.user });
+    const serverUrl = args.serverUrl.trim().replace(/\/+$/, "");
+    const resp = await SyncEngine.login(serverUrl, args.email, args.password);
+    saveSession({ serverUrl, token: resp.token, user: resp.user });
     await trySync();
     pushState();
     return buildState();

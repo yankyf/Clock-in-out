@@ -21,14 +21,28 @@ export class SyncEngine {
   ) {}
 
   static async login(serverUrl: string, email: string, password: string): Promise<LoginResponse> {
-    const res = await fetch(`${serverUrl}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const url = serverUrl.trim().replace(/\/+$/, ""); // tolerate trailing slashes
+    let res: Response;
+    try {
+      res = await fetch(`${url}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        // Free hosting tiers can take ~50s to wake from sleep on the first hit.
+        signal: AbortSignal.timeout(60_000),
+      });
+    } catch (e) {
+      const cause = (e as { cause?: { code?: string; message?: string } }).cause;
+      const detail = cause?.code || cause?.message || (e as Error).message;
+      throw new Error(
+        `Can't reach the server at ${url} — ${detail}. ` +
+          `Check the Server URL (it should start with https://) and that you're online. ` +
+          `If it's a free host, open the URL in a browser once to wake it, then retry.`,
+      );
+    }
     if (!res.ok) {
       const body = (await res.json().catch(() => ({}))) as { error?: string };
-      throw new Error(body.error ?? `Login failed (${res.status})`);
+      throw new Error(body.error ?? `Login failed (HTTP ${res.status})`);
     }
     return (await res.json()) as LoginResponse;
   }
