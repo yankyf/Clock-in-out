@@ -5,7 +5,7 @@ import type { Category, TimeEntry, User } from "@clock/shared";
 import { LocalDb } from "./localdb.js";
 import { SyncEngine } from "./sync.js";
 
-const DEFAULT_SERVER_URL = process.env.CLOCK_SERVER_URL ?? "http://localhost:4000";
+const DEFAULT_SERVER_URL = process.env.CLOCK_SERVER_URL ?? "https://clock-in-out-mmy0.onrender.com";
 const SYNC_INTERVAL_MS = 30_000;
 
 let win: BrowserWindow | null = null;

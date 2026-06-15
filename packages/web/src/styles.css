@@ -122,6 +122,26 @@ button.link.danger { color: var(--danger); }
 .dl-hint { margin: 0.5rem 0 1rem; font-size: 0.8rem; }
 .dl-cta { color: var(--accent); font-weight: 600; }
 
+.instructions { margin-top: 1rem; max-width: 640px; }
+.instructions ol { margin: 0.5rem 0 0; padding-left: 1.2rem; line-height: 1.6; }
+.instructions li { margin-bottom: 0.4rem; }
+.instructions code {
+  background: #0b1220;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.85em;
+}
+.instructions pre {
+  background: #0b1220;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  margin: 0.4rem 0;
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+
 .row { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0; }
 .row.between { justify-content: space-between; }
 .totals { color: var(--muted); }
