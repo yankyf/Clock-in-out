@@ -146,5 +146,79 @@ function registerIpc() {
     return buildState();
   });
 
+  // ---- offline entry editing -----------------------------------------------
+  // All of these write to the local store first (offline-safe); the sync
+  // engine reconciles with the server in the background.
+
+  type EntryFields = {
+    category: Category;
+    clockIn: string; // ISO
+    clockOut: string | null; // ISO
+    babysitterBonus: boolean;
+    note: string | null;
+  };
+
+  function validateFields(f: EntryFields) {
+    if (!f.clockIn || Number.isNaN(Date.parse(f.clockIn))) throw new Error("Clock in is required");
+    if (f.clockOut && Number.isNaN(Date.parse(f.clockOut))) throw new Error("Invalid clock out");
+    if (f.clockOut && new Date(f.clockOut) < new Date(f.clockIn)) {
+      throw new Error("Clock out is before clock in");
+    }
+  }
+
+  ipcMain.handle("add-entry", (_e, fields: EntryFields) => {
+    const session = loadSession();
+    if (!session) throw new Error("Not logged in");
+    validateFields(fields);
+    const now = new Date().toISOString();
+    db.putLocal({
+      id: randomUUID(),
+      userId: session.user.id,
+      category: fields.category,
+      clockIn: fields.clockIn,
+      clockOut: fields.clockOut,
+      babysitterBonus: fields.babysitterBonus,
+      note: fields.note,
+      updatedAt: now,
+      deleted: false,
+    });
+    pushState();
+    trySync();
+    return buildState();
+  });
+
+  ipcMain.handle("update-entry", (_e, args: { id: string } & EntryFields) => {
+    const session = loadSession();
+    if (!session) throw new Error("Not logged in");
+    const existing = db.get(args.id);
+    if (!existing) throw new Error("Entry not found");
+    if (existing.userId !== session.user.id) throw new Error("Not your entry");
+    validateFields(args);
+    db.putLocal({
+      ...existing,
+      category: args.category,
+      clockIn: args.clockIn,
+      clockOut: args.clockOut,
+      babysitterBonus: args.babysitterBonus,
+      note: args.note,
+      updatedAt: new Date().toISOString(),
+    });
+    pushState();
+    trySync();
+    return buildState();
+  });
+
+  ipcMain.handle("delete-entry", (_e, args: { id: string }) => {
+    const session = loadSession();
+    if (!session) throw new Error("Not logged in");
+    const existing = db.get(args.id);
+    if (!existing) throw new Error("Entry not found");
+    if (existing.userId !== session.user.id) throw new Error("Not your entry");
+    db.putLocal({ ...existing, deleted: true, updatedAt: new Date().toISOString() });
+    pushState();
+    trySync();
+    return buildState();
+  });
+
   ipcMain.handle("sync-now", () => trySync());
 }

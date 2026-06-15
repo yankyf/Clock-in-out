@@ -11,6 +11,9 @@ const clockApi = {
   logout: () => ipcRenderer.invoke("logout"),
   clockIn: (category: string) => ipcRenderer.invoke("clock-in", { category }),
   clockOut: () => ipcRenderer.invoke("clock-out"),
+  addEntry: (fields: unknown) => ipcRenderer.invoke("add-entry", fields),
+  updateEntry: (args: unknown) => ipcRenderer.invoke("update-entry", args),
+  deleteEntry: (id: string) => ipcRenderer.invoke("delete-entry", { id }),
   syncNow: () => ipcRenderer.invoke("sync-now"),
   onState: (cb: (state: unknown) => void) => {
     const listener = (_e: unknown, state: unknown) => cb(state);
