@@ -7,8 +7,8 @@
       <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <rect width="512" height="512" rx="104" fill="#ffffff"/>
-  <g transform="translate(256,256) scale(0.74) translate(-256,-256)">
+  <!-- transparent background, full-bleed mark -->
+  <g transform="translate(256,256) scale(1.28) translate(-256,-256)">
     <path d="M 392 176 A 152 152 0 1 0 392 336" fill="none" stroke="#1b2630" stroke-width="56" stroke-linecap="butt"/>
     <polygon points="232,290 300,232 400,232 332,290" fill="#1ecabf" filter="url(#glow)"/>
   </g>
