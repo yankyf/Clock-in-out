@@ -28,6 +28,7 @@
     "appId": "com.clockinout.app",
     "productName": "Clock In Out",
     "executableName": "clock-in-out",
+    "icon": "build/icon.png",
     "electronVersion": "31.3.0",
     "npmRebuild": false,
     "files": ["dist/**/*", "package.json"],

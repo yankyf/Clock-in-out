@@ -25,6 +25,7 @@ export function Login({ onLoggedIn }: { onLoggedIn: (u: User) => void }) {
   return (
     <div className="center">
       <form className="card login" onSubmit={submit}>
+        <img src="/icon.svg" alt="" className="logo-lg" />
         <h1>Clock In/Out</h1>
         <p className="muted">Sign in to the admin platform</p>
         <label>

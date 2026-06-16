@@ -43,6 +43,9 @@ body {
 .login { width: 320px; display: flex; flex-direction: column; gap: 0.75rem; }
 .login h1 { margin: 0; }
 
+.logo { width: 22px; height: 22px; display: block; }
+.logo-lg { width: 48px; height: 48px; display: block; margin-bottom: 0.25rem; }
+
 label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
 
 input, select, button {

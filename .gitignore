@@ -4,6 +4,10 @@ build/
 out/
 release/
 *.log
+
+# but keep the desktop app icon (a source asset that lives under build/)
+!packages/desktop/build/
+!packages/desktop/build/icon.png
 .env
 .env.local
 *.local
