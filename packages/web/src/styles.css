@@ -43,8 +43,8 @@ body {
 .login { width: 320px; display: flex; flex-direction: column; gap: 0.75rem; }
 .login h1 { margin: 0; }
 
-.logo { width: 22px; height: 22px; display: block; }
-.logo-lg { width: 48px; height: 48px; display: block; margin-bottom: 0.25rem; }
+.logo { height: 26px; width: auto; display: block; }
+.logo-lg { height: 56px; width: auto; align-self: flex-start; display: block; margin-bottom: 0.25rem; }
 
 .brand { font-weight: 700; letter-spacing: -0.01em; }
 .brand .teal { color: #2bb8a6; }
