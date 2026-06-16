@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- light variant for dark backgrounds (top bar / login) -->
+  <path d="M 392 176 A 152 152 0 1 0 392 336" fill="none" stroke="#f1f5f9" stroke-width="56" stroke-linecap="butt"/>
+  <polygon points="232,290 300,232 400,232 332,290" fill="#28b9a6"/>
+</svg>
