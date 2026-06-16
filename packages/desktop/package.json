@@ -26,8 +26,8 @@
   },
   "build": {
     "appId": "com.clockinout.app",
-    "productName": "Clock In Out",
-    "executableName": "clock-in-out",
+    "productName": "Clocking Easy",
+    "executableName": "clocking-easy",
     "icon": "build/icon.png",
     "electronVersion": "31.3.0",
     "npmRebuild": false,

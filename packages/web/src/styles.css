@@ -46,6 +46,9 @@ body {
 .logo { width: 22px; height: 22px; display: block; }
 .logo-lg { width: 48px; height: 48px; display: block; margin-bottom: 0.25rem; }
 
+.brand { font-weight: 700; letter-spacing: -0.01em; }
+.brand .teal { color: #2bb8a6; }
+
 label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
 
 input, select, button {

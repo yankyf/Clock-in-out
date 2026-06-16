@@ -88,7 +88,7 @@ function render() {
 
 function loginView(s: State): string {
   return `
-    <h1>Clock In/Out</h1>
+    <h1>Clocking <span style="color:#2bb8a6">Easy</span></h1>
     <p class="muted">Sign in to your account</p>
     <div class="card">
       <label>Server URL</label>

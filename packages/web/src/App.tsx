@@ -51,7 +51,7 @@ export function App() {
     <div className="app">
       <header className="topbar">
         <img src="/logo-light.svg" alt="" className="logo" />
-        <strong>Clock In/Out</strong>
+        <strong className="brand">Clocking <span className="teal">Easy</span></strong>
         <nav className="tabs">
           <button className={tab === "entries" ? "tab active" : "tab"} onClick={() => setTab("entries")}>
             Entries

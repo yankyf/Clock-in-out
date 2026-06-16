@@ -49,7 +49,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 480,
     height: 680,
-    title: "Clock In/Out",
+    title: "Clocking Easy",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
