@@ -4,8 +4,6 @@ name: Build desktop installers
 # publish them to a GitHub Release. The website's Download page links to the
 # release's "latest" assets.
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
 
 permissions:
